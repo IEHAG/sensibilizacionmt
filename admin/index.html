@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Administración - I.E. Héctor Abad Gómez</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: var(--spacing-xl);
+    }
+    
+    .admin-header {
+      background: var(--bg-primary);
+      border-radius: var(--border-radius-xl);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid #e2e8f0;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .stat-card {
+      background: var(--bg-primary);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid #e2e8f0;
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .stat-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    
+    .filters {
+      background: var(--bg-primary);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius-lg);
+      margin-bottom: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid #e2e8f0;
+    }
+    
+    .filters-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-md);
+      align-items: end;
+    }
+    
+    .table-container {
+      background: var(--bg-primary);
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid #e2e8f0;
+    }
+    
+    .table-header {
+      background: var(--bg-tertiary);
+      padding: var(--spacing-lg);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .table th,
+    .table td {
+      padding: var(--spacing-md);
+      text-align: left;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .table th {
+      background: var(--bg-tertiary);
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: var(--font-size-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .table td {
+      color: var(--text-secondary);
+      font-size: var(--font-size-sm);
+    }
+    
+    .table tbody tr:hover {
+      background: #f8fafc;
+    }
+    
+    .badge-status {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--border-radius);
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    
+    .badge-success {
+      background: #dcfce7;
+      color: #166534;
+    }
+    
+    .signature-preview {
+      width: 60px;
+      height: 30px;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--border-radius);
+      background: var(--bg-primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .signature-preview:hover {
+      border-color: var(--primary-color);
+      transform: scale(1.1);
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-lg);
+      background: var(--bg-tertiary);
+    }
+    
+    .pagination button {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid #e2e8f0;
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .pagination button:hover:not(:disabled) {
+      background: var(--primary-color);
+      color: var(--text-white);
+      border-color: var(--primary-color);
+    }
+    
+    .pagination button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .pagination .active {
+      background: var(--primary-color);
+      color: var(--text-white);
+      border-color: var(--primary-color);
+    }
+    
+    .no-data {
+      text-align: center;
+      padding: var(--spacing-2xl);
+      color: var(--text-muted);
+    }
+    
+    .no-data i {
+      font-size: 3rem;
+      margin-bottom: var(--spacing-md);
+      color: var(--text-muted);
+    }
+    
+    .export-buttons {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+    
+    .modal-content {
+      background: var(--bg-primary);
+      border-radius: var(--border-radius-xl);
+      padding: var(--spacing-xl);
+      max-width: 90vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-xl);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+      padding-bottom: var(--spacing-md);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: var(--spacing-sm);
+      border-radius: var(--border-radius);
+      transition: all 0.3s ease;
+    }
+    
+    .modal-close:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+    
+    .signature-modal img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--border-radius);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>Administración - I.E. Héctor Abad Gómez</h1>
+      </div>
+      <div class="header-actions">
+        <a href="../index.html" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i> Volver al Formulario
+        </a>
+        <button class="btn btn-primary" onclick="actualizarDatos()">
+          <i class="fas fa-sync-alt"></i> Actualizar
+        </button>
+        <button class="btn btn-outline" onclick="cerrarSesion()">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-container">
+    <!-- Estadísticas -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="stat-number" id="totalRegistros">-</div>
+        <div class="stat-label">Total Registros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="registrosHoy">-</div>
+        <div class="stat-label">Registros Hoy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="programacionSoftware">-</div>
+        <div class="stat-label">Programación</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="prensaDigital">-</div>
+        <div class="stat-label">Prensa Digital</div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters">
+      <h3><i class="fas fa-filter"></i> Filtros</h3>
+      <div class="filters-row">
+        <div class="form-group">
+          <label>Buscar por nombre o documento</label>
+          <input type="text" id="buscar" placeholder="Buscar..." class="input-field">
+        </div>
+        <div class="form-group">
+          <label>Programa</label>
+          <select id="filtroPrograma" class="select-field">
+            <option value="">Todos los programas</option>
+            <option value="PROGRAMACIÓN DE SOFTWARE">Programación de Software</option>
+            <option value="PRENSA DIGITAL PARA MEDIOS IMPRESOS">Prensa Digital</option>
+            <option value="FORMACIÓN ARTÍSTICA">Formación Artística</option>
+            <option value="GRADO ACADÉMICO NORMAL">Grado Académico Normal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Hora de asistencia</label>
+          <select id="filtroHora" class="select-field">
+            <option value="">Todas las horas</option>
+            <option value="06:00AM">06:00 AM</option>
+            <option value="No puedo asistir">No puedo asistir</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" onclick="aplicarFiltros()">
+            <i class="fas fa-search"></i> Filtrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de exportación -->
+    <div class="export-buttons">
+      <button class="btn btn-success" onclick="exportarExcel()">
+        <i class="fas fa-file-excel"></i> Exportar Excel
+      </button>
+      <button class="btn btn-outline" onclick="exportarPDF()">
+        <i class="fas fa-file-pdf"></i> Exportar PDF
+      </button>
+    </div>
+
+    <!-- Tabla de registros -->
+    <div class="table-container">
+      <div class="table-header">
+        <h3><i class="fas fa-table"></i> Registros de Sensibilización</h3>
+      </div>
+      <div id="tablaContainer">
+        <div class="no-data">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Cargando registros...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para ver firma -->
+  <div id="signatureModal" class="modal hidden">
+    <div class="modal-content signature-modal">
+      <div class="modal-header">
+        <h3>Firma Digital</h3>
+        <button class="modal-close" onclick="cerrarModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="signatureContent">
+        <!-- Contenido de la firma se carga aquí -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>

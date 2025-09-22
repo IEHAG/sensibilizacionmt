@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<!--
+  Sistema de Registro de Sensibilización - Media Técnica
+  Desarrollado por: Victor Cañola
+  Institución: I.E. Héctor Abad Gómez
+  Fecha: Enero 2025
+  © 2025 Victor Cañola - Todos los derechos reservados
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎓 I.E. Héctor Abad Gómez - Registro Media Técnica</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Banner Educativo -->
+  <div class="banner">
+    <div class="banner-content">
+      <div class="banner-background">
+        <div class="banner-pattern"></div>
+        <div class="banner-shapes">
+          <div class="shape shape-1"></div>
+          <div class="shape shape-2"></div>
+          <div class="shape shape-3"></div>
+        </div>
+      </div>
+      <div class="banner-text">
+        <div class="institution-info">
+          <div class="institution-logo">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="institution-details">
+            <h1>Institución Educativa Héctor Abad Gómez</h1>
+            <p class="institution-subtitle">Formando Profesionales del Futuro</p>
+            <div class="institution-badges">
+              <span class="badge"><i class="fas fa-award"></i> Calidad Educativa</span>
+              <span class="badge"><i class="fas fa-users"></i> Comunidad</span>
+              <span class="badge"><i class="fas fa-lightbulb"></i> Innovación</span>
+            </div>
+          </div>
+        </div>
+        <div class="banner-announcement">
+          <div class="announcement-card">
+            <div class="announcement-icon">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="announcement-content">
+              <h2>Reunión de Sensibilización</h2>
+              <p>Programa de Media Técnica - Grado 9°</p>
+              <div class="announcement-details">
+                <span><i class="fas fa-clock"></i> 06:00 AM</span>
+                <span><i class="fas fa-map-marker-alt"></i> Instalaciones</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="progress-indicator">
+        <div class="step active" id="step-indicator-1">
+          <span class="step-number">1</span>
+          <span class="step-label">Buscar Estudiante</span>
+        </div>
+        <div class="step" id="step-indicator-2">
+          <span class="step-number">2</span>
+          <span class="step-label">Formulario</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="admin/login.html" class="btn btn-outline btn-admin" title="Acceso administrativo - Solo personal autorizado">
+          <i class="fas fa-shield-alt"></i> Administración
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- PASO 1: BÚSQUEDA DE ESTUDIANTE -->
+    <div class="card" id="step1">
+      <div class="card-header">
+        <h2><i class="fas fa-search"></i> Buscar Estudiante</h2>
+        <p class="subtitle">Ingresa el número de documento del estudiante para continuar</p>
+      </div>
+      
+      <div class="form-group">
+        <label for="documento">
+          <i class="fas fa-id-card"></i> Número de Documento
+        </label>
+        <input 
+          type="text" 
+          id="documento" 
+          placeholder="Ej: 1027806990" 
+          maxlength="15"
+          class="input-field"
+        />
+        <div class="input-hint">Ingresa el documento sin puntos ni espacios</div>
+      </div>
+
+      <button class="btn btn-primary" onclick="buscarEstudiante()">
+        <i class="fas fa-search"></i> Buscar Estudiante
+      </button>
+
+      <!-- Resultado de búsqueda exitosa -->
+      <div id="resultado" class="hidden fade-in">
+        <div class="success-card">
+          <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3>¡Estudiante Encontrado!</h3>
+          <div class="student-info">
+            <div class="info-item">
+              <i class="fas fa-user"></i>
+              <div>
+                <span class="label">Nombre:</span>
+                <span class="value" id="nombre"></span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-layer-group"></i>
+              <div>
+                <span class="label">Grado:</span>
+                <span class="value" id="grado"></span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-users"></i>
+              <div>
+                <span class="label">Grupo:</span>
+                <span class="value" id="grupo"></span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-chalkboard-teacher"></i>
+              <div>
+                <span class="label">Director:</span>
+                <span class="value" id="director"></span>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-success" onclick="mostrarFormulario()">
+            <i class="fas fa-arrow-right"></i> Continuar al Formulario
+          </button>
+        </div>
+      </div>
+
+      <!-- Error de búsqueda -->
+      <div id="error" class="hidden fade-in">
+        <div class="error-card">
+          <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3>Estudiante No Encontrado</h3>
+          <p>Verifica que el número de documento sea correcto e intenta nuevamente.</p>
+          <button class="btn btn-outline" onclick="limpiarBusqueda()">
+            <i class="fas fa-redo"></i> Intentar de Nuevo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 2: FORMULARIO DE SENSIBILIZACIÓN -->
+    <div class="card hidden" id="step2">
+      <div class="card-header">
+        <h2><i class="fas fa-clipboard-list"></i> Formulario de Sensibilización</h2>
+        <p class="subtitle">Completa la información del acudiente para la reunión</p>
+      </div>
+
+      <form id="formularioSensibilizacion" class="form-container">
+        <!-- Información del Acudiente -->
+        <div class="form-section">
+          <h3><i class="fas fa-user"></i> Información del Acudiente</h3>
+          
+          <div class="form-group">
+            <label for="acudiente">
+              <i class="fas fa-user"></i> Nombres y Apellidos del Acudiente *
+            </label>
+            <input 
+              type="text" 
+              id="acudiente" 
+              placeholder="Ej: María García Pérez" 
+              class="input-field"
+              required
+            />
+            <div class="input-hint">Ingresa el nombre completo del acudiente</div>
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">
+              <i class="fas fa-phone"></i> Teléfono / WhatsApp *
+            </label>
+            <input 
+              type="tel" 
+              id="telefono" 
+              placeholder="Ej: 3001234567" 
+              class="input-field"
+              maxlength="10"
+              required
+            />
+            <div class="input-hint">Ingresa el número de contacto (10 dígitos)</div>
+          </div>
+
+          <div class="form-group">
+            <label for="correo">
+              <i class="fas fa-envelope"></i> Correo Electrónico del Estudiante *
+            </label>
+            <input 
+              type="email" 
+              id="correo" 
+              placeholder="Ej: estudiante@ejemplo.com" 
+              class="input-field"
+              required
+            />
+            <div class="input-hint">Correo electrónico del estudiante</div>
+          </div>
+        </div>
+
+        <!-- Información de la Reunión -->
+        <div class="form-section">
+          <h3><i class="fas fa-calendar-alt"></i> Información de la Reunión</h3>
+          
+          <div class="form-group">
+            <label for="hora">
+              <i class="fas fa-clock"></i> Confirmar Hora a Asistir *
+            </label>
+            <select id="hora" class="select-field" required>
+              <option value="">-- Selecciona una opción --</option>
+              <option value="06:00AM">06:00 AM</option>
+              <option value="No puedo asistir">No puedo asistir</option>
+              <option value="Otros">Otros (especificar)</option>
+            </select>
+            <div class="input-hint">Selecciona la hora de asistencia</div>
+          </div>
+
+          <div class="form-group">
+            <label for="programa">
+              <i class="fas fa-graduation-cap"></i> Programa de Media Técnica *
+            </label>
+            <select id="programa" class="select-field" required>
+              <option value="">-- Selecciona un programa --</option>
+              <option value="PROGRAMACIÓN DE SOFTWARE">Programación de Software</option>
+              <option value="PRENSA DIGITAL PARA MEDIOS IMPRESOS">Prensa Digital para Medios Impresos</option>
+              <option value="FORMACIÓN ARTÍSTICA">Formación Artística</option>
+              <option value="GRADO ACADÉMICO NORMAL">Grado Académico Normal</option>
+            </select>
+            <div class="input-hint">Selecciona el programa de interés</div>
+          </div>
+        </div>
+
+        <!-- Firma Digital -->
+        <div class="form-section">
+          <h3><i class="fas fa-signature"></i> Firma Digital del Acudiente</h3>
+          
+          <div class="signature-container">
+            <div class="signature-header">
+              <label>Firma Digital *</label>
+              <div class="signature-controls">
+                <button type="button" class="btn btn-outline btn-sm" onclick="limpiarFirma()">
+                  <i class="fas fa-eraser"></i> Limpiar
+                </button>
+              </div>
+            </div>
+            <div class="signature-canvas-container">
+              <canvas id="firma" width="400" height="150"></canvas>
+              <div class="signature-hint">
+                <i class="fas fa-info-circle"></i>
+                Firma dentro del área marcada usando el mouse o el dedo
+              </div>
+              <div id="signatureStatus" class="signature-status hidden">
+                <i class="fas fa-check-circle"></i>
+                Firma completada
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" onclick="volverBusqueda()">
+            <i class="fas fa-arrow-left"></i> Volver a Búsqueda
+          </button>
+          <button type="submit" class="btn btn-primary" id="btnEnviar">
+            <i class="fas fa-paper-plane"></i> Enviar Formulario
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Procesando formulario...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

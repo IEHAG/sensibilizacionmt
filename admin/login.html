@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acceso Administrativo - I.E. Héctor Abad Gómez</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--banner-gradient);
+      padding: var(--spacing-xl);
+    }
+    
+    .login-card {
+      background: var(--bg-primary);
+      border-radius: var(--border-radius-xl);
+      padding: var(--spacing-2xl);
+      box-shadow: var(--shadow-xl);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    
+    .login-header {
+      margin-bottom: var(--spacing-2xl);
+    }
+    
+    .login-header .logo {
+      width: 80px;
+      height: 80px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-lg);
+    }
+    
+    .login-header .logo i {
+      font-size: 2rem;
+      color: var(--text-white);
+    }
+    
+    .login-header h1 {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .login-header p {
+      color: var(--text-secondary);
+      font-size: var(--font-size-base);
+    }
+    
+    .form-group {
+      margin-bottom: var(--spacing-lg);
+      text-align: left;
+    }
+    
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .input-group {
+      position: relative;
+    }
+    
+    .input-group i {
+      position: absolute;
+      left: var(--spacing-md);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      z-index: 2;
+    }
+    
+    .input-group input {
+      padding-left: 3rem;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: var(--spacing-md);
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      z-index: 2;
+      padding: var(--spacing-xs);
+    }
+    
+    .password-toggle:hover {
+      color: var(--primary-color);
+    }
+    
+    .login-actions {
+      margin-top: var(--spacing-xl);
+    }
+    
+    .btn-login {
+      width: 100%;
+      padding: var(--spacing-lg);
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+    }
+    
+    .back-link {
+      margin-top: var(--spacing-lg);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      transition: color 0.3s ease;
+    }
+    
+    .back-link:hover {
+      color: var(--primary-color);
+    }
+    
+    .error-message {
+      background: #fef2f2;
+      color: #dc2626;
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      border: 1px solid #fecaca;
+      margin-bottom: var(--spacing-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      animation: shake 0.5s ease-in-out;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    
+    .security-info {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: var(--border-radius);
+      padding: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+      font-size: var(--font-size-sm);
+      color: #0369a1;
+    }
+    
+    .security-info i {
+      margin-right: var(--spacing-xs);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="logo">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h1>Acceso Administrativo</h1>
+        <p>I.E. Héctor Abad Gómez</p>
+      </div>
+
+      <form id="loginForm" class="login-form">
+        <div id="errorMessage" class="error-message hidden">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span id="errorText">Clave incorrecta</span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">
+            <i class="fas fa-key"></i> Clave de Acceso
+          </label>
+          <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input 
+              type="password" 
+              id="password" 
+              placeholder="Ingresa la clave de acceso"
+              class="input-field"
+              required
+              autocomplete="current-password"
+            />
+            <button type="button" class="password-toggle" onclick="togglePassword()">
+              <i class="fas fa-eye" id="toggleIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="login-actions">
+          <button type="submit" class="btn btn-primary btn-login">
+            <i class="fas fa-sign-in-alt"></i> Acceder al Panel
+          </button>
+        </div>
+
+        <a href="../index.html" class="back-link">
+          <i class="fas fa-arrow-left"></i> Volver al Formulario
+        </a>
+
+        <div class="security-info">
+          <i class="fas fa-info-circle"></i>
+          <strong>Acceso Restringido:</strong> Solo personal autorizado puede acceder a esta sección.
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Clave de acceso
+    const ADMIN_PASSWORD = 'CAÑOLA2027*';
+    
+    // Elementos del DOM
+    const loginForm = document.getElementById('loginForm');
+    const passwordInput = document.getElementById('password');
+    const errorMessage = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
+    
+    // Configurar eventos
+    loginForm.addEventListener('submit', handleLogin);
+    passwordInput.addEventListener('input', clearError);
+    
+    // Manejar login
+    function handleLogin(e) {
+      e.preventDefault();
+      
+      const password = passwordInput.value.trim();
+      
+      if (password === ADMIN_PASSWORD) {
+        // Clave correcta - redirigir al panel
+        localStorage.setItem('admin_authenticated', 'true');
+        localStorage.setItem('admin_login_time', Date.now());
+        window.location.href = 'index.html';
+      } else {
+        // Clave incorrecta - mostrar error
+        showError('Clave de acceso incorrecta. Intenta nuevamente.');
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    }
+    
+    // Mostrar error
+    function showError(message) {
+      errorText.textContent = message;
+      errorMessage.classList.remove('hidden');
+      
+      // Ocultar error después de 5 segundos
+      setTimeout(() => {
+        errorMessage.classList.add('hidden');
+      }, 5000);
+    }
+    
+    // Limpiar error
+    function clearError() {
+      errorMessage.classList.add('hidden');
+    }
+    
+    // Toggle password visibility
+    function togglePassword() {
+      const toggleIcon = document.getElementById('toggleIcon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      }
+    }
+    
+    // Verificar si ya está autenticado
+    function checkAuth() {
+      const isAuthenticated = localStorage.getItem('admin_authenticated');
+      const loginTime = localStorage.getItem('admin_login_time');
+      
+      if (isAuthenticated === 'true' && loginTime) {
+        // Verificar si la sesión no ha expirado (24 horas)
+        const now = Date.now();
+        const sessionDuration = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+        
+        if (now - parseInt(loginTime) < sessionDuration) {
+          // Sesión válida - redirigir al panel
+          window.location.href = 'index.html';
+        } else {
+          // Sesión expirada - limpiar y mostrar login
+          localStorage.removeItem('admin_authenticated');
+          localStorage.removeItem('admin_login_time');
+        }
+      }
+    }
+    
+    // Verificar autenticación al cargar
+    checkAuth();
+  </script>
+</body>
+</html>
